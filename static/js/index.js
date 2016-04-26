@@ -96,13 +96,16 @@ var LSMT = (function() {
    *       if it begins with a yaml metadata header, it is parsed first
    */
   function parseInput() {
-      var yamlParsed, title, text = codemirror.getValue();
+      var yamlParsed, title, content, text = codemirror.getValue();
 
       // loadFront() may fail, so we need to catch that
       try {
         yamlParsed = jsyaml.loadFront(text);
         title = '<h1>' + (yamlParsed.title || '') + '</h1>';
-        $('#html-preview').html(title + marked(yamlParsed.__content));
+        content = title + marked(yamlParsed.__content);
+        // replaces [ ] and [x] after bullet points with checkbox unicode characters
+        content = content.replace(/^- \[ \]/gm, "- &#9744;").replace(/^- \[x\]/gm, "- &#9745;");
+        $('#html-preview').html(content);
       } catch (e) {
         $('#html-preview').html(marked(text));
       }
