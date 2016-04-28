@@ -103,12 +103,13 @@ var LSMT = (function() {
         yamlParsed = jsyaml.loadFront(text);
         title = '<h1>' + (yamlParsed.title || '') + '</h1>';
         content = title + marked(yamlParsed.__content);
-        // replaces [ ] and [x] after bullet points with checkbox unicode characters
-        content = content.replace(/^- \[ \]/gm, "- &#9744;").replace(/^- \[x\]/gm, "- &#9745;");
-        $('#html-preview').html(content);
       } catch (e) {
-        $('#html-preview').html(marked(text));
+        content = marked(text);
       }
+      
+      // replaces [ ] and [x] after bullet points with checkbox unicode characters
+      content = content.replace(/^- \[ \]/gm, "- &#9744;").replace(/^- \[x\]/gm, "- &#9745;");
+      $('#html-preview').html(content);
   }
 
   $(document).ready(function() {
